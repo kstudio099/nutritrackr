@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -7,18 +8,12 @@ export default function SignupForm() {
     email: "",
   });
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-
-  const isEmailValid = (email) => {
-    // Validation simple de l'email
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const isEmailValid = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(""); // Réinitialise les erreurs lors de la saisie
   };
 
   const handleSubmit = async (e) => {
@@ -27,12 +22,12 @@ export default function SignupForm() {
     const { first_name, username, email } = formData;
 
     if (!first_name || !username || !email) {
-      setError("All fields are required.");
+      toast.error("All fields are required.");
       return;
     }
 
     if (!isEmailValid(email)) {
-      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.");
       return;
     }
 
@@ -45,13 +40,13 @@ export default function SignupForm() {
 
       const result = await res.json();
       if (!res.ok) {
-        setError(result.message || "Registration failed.");
+        toast.error(result.message || "Registration failed.");
       } else {
-        setMessage(result.message);
-        setFormData({ first_name: "", username: "", email: "" }); // reset
+        toast.success(result.message || "Registered successfully!");
+        setFormData({ first_name: "", username: "", email: "" });
       }
     } catch (err) {
-      setError("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     }
   };
 
@@ -85,10 +80,9 @@ export default function SignupForm() {
         className="block w-full mb-3 p-2 border rounded"
       />
 
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Sign Up</button>
-
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      {message && <p className="mt-4 text-sm text-green-600">{message}</p>}
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        Sign Up
+      </button>
     </form>
   );
 }
