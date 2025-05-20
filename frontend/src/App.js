@@ -1,18 +1,16 @@
-// src/App.jsx
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupPage from "./pages/Login/SignupPage";
-import ToastProvider from "./components/ToastProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <>
-      <ToastProvider />
+    <ToastContainer />
       <Router>
         <Routes>
-          {/* Route d'accueil ou tableau de bord */}
           <Route path="/" element={<h1>Welcome to NutriTrackr</h1>} />
-
-          {/* Page d'inscription */}
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </Router>

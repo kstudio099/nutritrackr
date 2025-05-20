@@ -1,4 +1,4 @@
-// src/pages/Login/SignupPage.js
+import React from "react";
 import SignupForm from "../../components/Login/SignupForm";
 
 export default function SignupPage() {
